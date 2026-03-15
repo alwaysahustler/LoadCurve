@@ -31,9 +31,11 @@ app = FastAPI(title="NLDC Grid API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],   # tighten this in production
-    allow_methods=["GET"],
+    allow_methods=["GET","POST"],
     allow_headers=["*"],
 )
+from agent_api import router as agent_router
+app.include_router(agent_router)
 
 
 def get_conn():

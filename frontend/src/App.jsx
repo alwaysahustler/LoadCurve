@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import AskAgent from "./AskAgent";
 import axios from "axios";
 import {
   ComposedChart, Line, XAxis, YAxis, CartesianGrid,
@@ -219,7 +220,7 @@ export default function App() {
               }}>C</div>
               <div>
                 <div style={{ fontSize:12, fontWeight:600, color:"#a99fff" }}>Chandan</div>
-                <div style={{ fontSize:10, color:"#555" }}></div>
+                <div style={{ fontSize:10, color:"#555" }}>Built this</div>
               </div>
             </div>
           </div>
@@ -325,6 +326,9 @@ export default function App() {
             Select a date from the calendar and click Load
           </div>
         )}
+
+        {/* AI Agent */}
+        <AskAgent />
       </div>
 
       <style>{`

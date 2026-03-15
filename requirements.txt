@@ -1,5 +1,7 @@
 psycopg2-binary
+xlrd
 openpyxl
 python-dotenv
 fastapi
 uvicorn[standard]
+google-genai
