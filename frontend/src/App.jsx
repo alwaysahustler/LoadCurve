@@ -219,7 +219,7 @@ export default function App() {
               }}>C</div>
               <div>
                 <div style={{ fontSize:12, fontWeight:600, color:"#a99fff" }}>Chandan</div>
-                <div style={{ fontSize:10, color:"#555" }}>Built this</div>
+                <div style={{ fontSize:10, color:"#555" }}></div>
               </div>
             </div>
           </div>
