@@ -22,8 +22,14 @@ from agent.question_guard import validate as validate_question
 
 load_dotenv()
 
-client       = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 MODEL        = "gemini-2.5-flash-preview-05-20"
+
+def _get_client():
+    """Lazy init — only fails at call time, not import time."""
+    key = os.getenv("GEMINI_API_KEY")
+    if not key:
+        raise ValueError("GEMINI_API_KEY not set in environment")
+    return genai.Client(api_key=key)
 DATABASE_URL = os.getenv("DATABASE_URL")
 MAX_ROWS     = 10
 
@@ -61,7 +67,7 @@ def format_rows(rows: list[dict]) -> str:
 
 def ask_gemini(prompt: str) -> tuple[str, int, int]:
     """Returns (text, input_tokens, output_tokens)."""
-    response = client.models.generate_content(model=MODEL, contents=prompt)
+    response = _get_client().models.generate_content(model=MODEL, contents=prompt)
     usage    = response.usage_metadata
     return (
         response.text.strip(),

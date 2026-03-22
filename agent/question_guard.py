@@ -21,8 +21,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-MODEL  = "gemini-2.0-flash"   # cheapest model for classification
+MODEL  = "gemini-2.0-flash-lite"
+
+def _get_client():
+    """Lazy init — only fails at call time, not import time."""
+    key = os.getenv("GEMINI_API_KEY")
+    if not key:
+        raise ValueError("GEMINI_API_KEY not set")
+    return genai.Client(api_key=key)
 
 # ── Layer 1: rule-based blocks ────────────────────────────────────────────────
 
@@ -116,7 +122,7 @@ def _llm_classify(question: str) -> tuple[bool, str]:
     )
 
     try:
-        response = client.models.generate_content(model=MODEL, contents=prompt)
+        response = _get_client().models.generate_content(model=MODEL, contents=prompt)
         verdict  = response.text.strip().upper()
         if "ALLOWED" in verdict:
             return True, "ok"
