@@ -22,7 +22,7 @@ from agent.question_guard import validate as validate_question
 
 load_dotenv()
 
-MODEL        = "gemini-2.5-flash-preview-05-20"
+MODEL        = "gemini-2.5-flash"
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 MAX_ROWS     = 10
