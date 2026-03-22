@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import AskAgent from "./AskAgent";
+import Metrics from "./Metrics";
 import axios from "axios";
 import {
   ComposedChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Brush, ReferenceLine
 } from "recharts";
 
-const API = import.meta.env.VITE_API_URL || "https://glorious-space-train-qwrx4q9pwrw3xg56-8000.app.github.dev";
+const API = import.meta.env.VITE_API_URL || "https://shiny-disco-vx45rvgq4gq36p5q-8000.app.github.dev";
 
 const LINES = [
   { key: "demand_met_mw", name: "Demand",  color: "#6C63FF", width: 2.5 },
@@ -281,6 +282,9 @@ export default function App() {
             </div>
           )}
         </div>
+
+        {/* Power engineering metrics */}
+        <Metrics summary={summary} />
 
         {error && (
           <div style={{ padding:"10px 14px", background:"rgba(220,50,50,0.12)", border:"1px solid rgba(220,50,50,0.3)", borderRadius:8, color:"#ff8888", marginBottom:20, fontSize:13 }}>{error}</div>

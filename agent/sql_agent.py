@@ -18,11 +18,12 @@ from dotenv import load_dotenv
 from agent.schema import SCHEMA
 from agent.safety import is_safe_sql
 from agent.token_tracker import log_usage, is_daily_limit_reached
+from agent.question_guard import validate as validate_question
 
 load_dotenv()
 
 client       = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-MODEL        = "gemini-2.5-flash"
+MODEL        = "gemini-2.5-flash-preview-05-20"
 DATABASE_URL = os.getenv("DATABASE_URL")
 MAX_ROWS     = 10
 
@@ -70,6 +71,15 @@ def ask_gemini(prompt: str) -> tuple[str, int, int]:
 
 
 def ask(question: str) -> dict:
+    # Question guard — blocks off-topic and malicious questions
+    allowed, reason = validate_question(question)
+    if not allowed:
+        return {
+            "answer": None, "sql": None, "rows": [],
+            "error": reason,
+            "tokens_used": 0,
+        }
+
     # Daily limit check
     if is_daily_limit_reached():
         return {

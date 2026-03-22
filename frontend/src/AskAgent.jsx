@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-const API = import.meta.env.VITE_API_URL || "https://glorious-space-train-qwrx4q9pwrw3xg56-8000.app.github.dev";
+const API = import.meta.env.VITE_API_URL || "https://shiny-disco-vx45rvgq4gq36p5q-8000.app.github.dev";
 
 const SUGGESTIONS = [
   "Which date had highest solar generation?",
