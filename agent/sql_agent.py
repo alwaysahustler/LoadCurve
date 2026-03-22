@@ -12,8 +12,8 @@ import os
 import re
 import psycopg2
 import psycopg2.extras
-from google import genai
 from dotenv import load_dotenv
+from agent.gemini_client import get_client
 
 from agent.schema import SCHEMA
 from agent.safety import is_safe_sql
@@ -24,12 +24,6 @@ load_dotenv()
 
 MODEL        = "gemini-2.5-flash-preview-05-20"
 
-def _get_client():
-    """Lazy init — only fails at call time, not import time."""
-    key = os.getenv("GEMINI_API_KEY")
-    if not key:
-        raise ValueError("GEMINI_API_KEY not set in environment")
-    return genai.Client(api_key=key)
 DATABASE_URL = os.getenv("DATABASE_URL")
 MAX_ROWS     = 10
 
@@ -67,7 +61,7 @@ def format_rows(rows: list[dict]) -> str:
 
 def ask_gemini(prompt: str) -> tuple[str, int, int]:
     """Returns (text, input_tokens, output_tokens)."""
-    response = _get_client().models.generate_content(model=MODEL, contents=prompt)
+    response = get_client().models.generate_content(model=MODEL, contents=prompt)
     usage    = response.usage_metadata
     return (
         response.text.strip(),
