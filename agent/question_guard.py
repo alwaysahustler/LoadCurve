@@ -17,7 +17,7 @@ Layer 2 — Gemini classifier (cheap, ~50 tokens):
 import re
 import os
 from dotenv import load_dotenv
-from agent.gemini_client import get_client
+from agent.gemini_client import call_gemini
 
 load_dotenv()
 
@@ -116,13 +116,12 @@ def _llm_classify(question: str) -> tuple[bool, str]:
     )
 
     try:
-        response = get_client().models.generate_content(model=MODEL, contents=prompt)
-        verdict  = response.text.strip().upper()
+        text, _, _ = call_gemini(MODEL, prompt)
+        verdict = text.strip().upper()
         if "ALLOWED" in verdict:
             return True, "ok"
         return False, "Question is not related to power grid data."
     except Exception:
-        # If classifier fails, allow through — don't block on classifier errors
         return True, "ok"
 
 

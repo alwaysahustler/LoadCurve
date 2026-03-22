@@ -13,7 +13,7 @@ import re
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
-from agent.gemini_client import get_client
+from agent.gemini_client import call_gemini
 
 from agent.schema import SCHEMA
 from agent.safety import is_safe_sql
@@ -61,13 +61,7 @@ def format_rows(rows: list[dict]) -> str:
 
 def ask_gemini(prompt: str) -> tuple[str, int, int]:
     """Returns (text, input_tokens, output_tokens)."""
-    response = get_client().models.generate_content(model=MODEL, contents=prompt)
-    usage    = response.usage_metadata
-    return (
-        response.text.strip(),
-        usage.prompt_token_count     or 0,
-        usage.candidates_token_count or 0,
-    )
+    return call_gemini(MODEL, prompt)
 
 
 def ask(question: str) -> dict:
